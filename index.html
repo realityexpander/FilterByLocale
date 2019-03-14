@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Static Template</title>
+  <script src="locales.js"></script>
+</head>
+
+<body>
+  <h3>Christopher Athanas</h3>
+  <p>Show a list of matched locales in the `#matches` element as the user types into the input.</p>
+  <p>The locales are in a `LANGUAGE_BY_LOCALE` var in the locales.js file</p>
+  <h3>Example</h3>
+  <p>Locale: <input type='text' value='uzb' disabled /></p>
+  <div>
+    <ul>
+      <li>Uzbek (Arabic)</li>
+      <li>Uzbek (Arabic, Afghanistan)</li>
+      <li>Uzbek (Cyrillic)</li>
+      <li>Uzbek (Cyrillic, Uzbekistan)</li>
+      <li>Uzbek (Latin)</li>
+      <li>Uzbek (Latin, Uzbekistan)</li>
+      <li>Uzbek</li>
+    </ul>
+  </div>
+  <hr />
+  <form>
+    <label for="locale">Locale: <input type="text" name="locale" id="locale" />
+      <div>
+        <ul id="matches"></ul>
+      </div>
+  </form>
+
+  <script>
+    let locales = Object.values(LANGUAGE_BY_LOCALE);
+
+    let localeText = document.getElementById("locale");
+    localeText.onkeyup = function () {
+      document.getElementById("matches").innerHTML = ""; // clear matches
+      let locale = localeText.value.toLowerCase();
+      if (locale === "")
+        return;
+
+      let localeFilteredItems = locales.reduce((acc, cur = []) => {
+        return cur.toLowerCase().startsWith(locale) ? [...acc, cur] : [...acc]
+      }, []);
+
+      localeFilteredItems.forEach((e) => {
+        let newLocaleListItem = document.createElement("li");
+        let localeListValue = document.createTextNode(e);
+        newLocaleListItem.appendChild(localeListValue);
+        document.getElementById("matches").appendChild(newLocaleListItem);
+      });
+    }
+  </script>
+
+</body>
+
+</html>
